@@ -1,0 +1,154 @@
+
+
+vgg11.classifier
+Out[15]:
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+
+vgg11_bn.classifier
+Out[18]:
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+vgg13.classifier
+Out[20]:
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+vgg13_bn.classifier
+Out[23]:
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+
+vgg16.classifier
+Out[25]:
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+
+
+vgg16_bn.classifier
+Out[27]:
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+vgg19_bn.classifier
+Out[33]:
+Sequential(
+  (0): Linear(in_features=25088, out_features=4096, bias=True)
+  (1): ReLU(inplace)
+  (2): Dropout(p=0.5)
+  (3): Linear(in_features=4096, out_features=4096, bias=True)
+  (4): ReLU(inplace)
+  (5): Dropout(p=0.5)
+  (6): Linear(in_features=4096, out_features=1000, bias=True)
+)
+
+
+densenet121
+ds.classifier
+Out[39]: Linear(in_features=1024, out_features=1000, bias=True)
+
+
+ds161.classifier
+Out[45]: Linear(in_features=2208, out_features=1000, bias=True)
+
+
+print(ds169.classifier, ds201.classifier, sep='\n')
+Linear(in_features=1664, out_features=1000, bias=True)
+Linear(in_features=1920, out_features=1000, bias=True)
+
+***************
+
+inception_v3',
+inception.fc
+Out[17]: Linear(in_features=2048, out_features=1000, bias=True)
+
+*************
+
+print(resnet101.fc, resnet152.fc, sep='\n')
+Linear(in_features=2048, out_features=1000, bias=True)
+Linear(in_features=2048, out_features=1000, bias=True)
+
+
+As redes abaixo ficaram executando
+
+print(resnet18.fc,resnet34.fc,resnet50.fc,sep='\n')
+Linear(in_features=512, out_features=1000, bias=True)
+Linear(in_features=512, out_features=1000, bias=True)
+Linear(in_features=2048, out_features=1000, bias=True)
+
+****************8
+
+squeezenet1_0.classifier
+Out[58]:
+Sequential(
+  (0): Dropout(p=0.5)
+  (1): Conv2d(512, 1000, kernel_size=(1, 1), stride=(1, 1))
+  (2): ReLU(inplace)
+  (3): AvgPool2d(kernel_size=13, stride=1, padding=0)
+)
+
+
+ squeezenet1_1.classifier
+Out[59]:
+Sequential(
+  (0): Dropout(p=0.5)
+  (1): Conv2d(512, 1000, kernel_size=(1, 1), stride=(1, 1))
+  (2): ReLU(inplace)
+  (3): AvgPool2d(kernel_size=13, stride=1, padding=0)
+)
