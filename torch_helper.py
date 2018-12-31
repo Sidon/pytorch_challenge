@@ -3,12 +3,10 @@ import torch
 from torchvision import datasets, models
 from torchvision import transforms as tv_transforms
 from torch.utils.data.sampler import SubsetRandomSampler
-import matplotlib.pyplot as plt
-
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-
+# import matplotlib.pyplot as plt
+# import torch.nn as nn
+# import torch.nn.functional as F
+# import torch.optim as optim
 
 
 class MyNet:
@@ -28,10 +26,10 @@ class MyNet:
         # self.__tracking['optmizer_name'] = None
 
         self.__trained_models = {
-            'vgg11': {'model': models.vgg11, 'change_model': self.__vgg},
+            'vgg11':    {'model': models.vgg11, 'change_model': self.__vgg},
             'vgg11_bn': {'model': models.vgg11_bn, 'change_model': self.__vgg},
-            'vgg13': {'model': models.vgg13}, 'change_model': self.__vgg,
-            'vgg13_bn': {'model': models.vgg13_bn}, 'change_model': self.__vgg,
+            'vgg13':    {'model': models.vgg13, 'change_model': self.__vgg},
+            'vgg13_bn': {'model': models.vgg13_bn, 'change_model': self.__vgg},
             'vgg16': {'model': models.vgg16, 'change_model': self.__vgg},
             'vgg16_bn': {'model': models.vgg16_bn, 'change_model': self.__vgg},
             'vgg19': {'model': models.vgg19, 'change_model': self.__vgg},
@@ -62,20 +60,6 @@ class MyNet:
 
         # Replace fc in trained model
         # self.__trained_model.fc = self.fc
-
-    def __fc(self, in_features, hidden_features = [512, 256], dropout=0.2, out_features = 102 ):
-        fc = nn.Sequential()  # type: object
-        n = 1
-        for h in hidden_features:
-            fc_name = 'fc' + str(n)
-            relu_name = 'relu' + str(n)
-            fc.add_module(fc_name, nn.Linear(in_features, h))
-            fc.add_module(relu_name, nn.ReLU())
-            in_features = h
-            n+=1
-        fc.add_module('out', nn.Linear(in_features, out_features))
-        return fc
-
 
     def __vgg(self, model, fc=None, out_features=102):
         if not fc is None:
