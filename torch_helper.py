@@ -10,7 +10,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 
 
 class MyNet:
-    def __init__(self, trained_name, fc_layers = None, out_features = 102):
+    def __init__(self, trained_name, fc_layers = None, out_features = 102, optimizer=None):
         # Additional variables will be used to track training progress for easier re-loads, plotting, etc.
 
 
@@ -49,6 +49,9 @@ class MyNet:
             'inception': {'model': models.inception_v3, 'change_model': self.__inception},
         }
 
+        # Criar o optimizer em cad rede
+        self.optimizer = None if optimizer is None else optimizer
+
         # Import trained model
         __model = self.__trained_models[trained_name]['model'](pretrained=True)
 
@@ -57,6 +60,7 @@ class MyNet:
 
         # Config parameters of the trained model
         self.__config_trained_model()
+
 
     def __vgg(self, model, fc=None, out_features=102):
         if not fc is None:
@@ -111,6 +115,12 @@ class MyNet:
     def __config_trained_model(self):
         for param in self.__trained_model.parameters():
              param.requires_grad = False
+
+    def create_optmizer(self, optimizer=None, **kwargs):
+        optimizer = self.optimizer if optimizer==None else optimizer
+        return optimizer(**kwargs)
+
+
 
 class Transforms:
     normalize = ([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
