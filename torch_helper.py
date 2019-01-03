@@ -25,6 +25,9 @@ class MyNet:
         # self.__tracking['los_name'] = None
         # self.__tracking['optmizer_name'] = None
 
+        # for saving model
+        self.id_model = trained_name
+
         self.__trained_models = {
             'vgg11':    {'model': models.vgg11, 'change_model': self.__vgg},
             'vgg11_bn': {'model': models.vgg11_bn, 'change_model': self.__vgg},
@@ -47,19 +50,13 @@ class MyNet:
         }
 
         # Import trained model
-        model = self.__trained_models[trained_name]['model'](pretrained=True)
-        #
-        # print( 'Name===>', self.__trained_name,)
-        # print( 'model===>', self.__trained_models[self.__trained_name])
-        # print( 'change===>', self.__trained_models['change_model'])
+        __model = self.__trained_models[trained_name]['model'](pretrained=True)
 
-        self.__trained_model = self.__trained_models[trained_name]['change_model'](model, fc_layers, out_features)
+        # Change last layer of trained model
+        self.__trained_model = self.__trained_models[trained_name]['change_model'](__model, fc_layers, out_features)
 
-        # Create the full connected layer
-        #self._fc = self.__fc(self.__trained_models[trained_name]['size'], fc_layers, self.dropout, self.out_features)
-
-        # Replace fc in trained model
-        # self.__trained_model.fc = self.fc
+        # Config parameters of the trained model
+        self.__config_trained_model()
 
     def __vgg(self, model, fc=None, out_features=102):
         if not fc is None:
@@ -82,7 +79,6 @@ class MyNet:
             model.fc.out_features = out_features
         return model
 
-
     def __squeeznet(self, model, fc=None, out_features=102):
         if not fc is None:
             model.fc = fc
@@ -90,11 +86,7 @@ class MyNet:
             model.fc.out_features = out_features
         return model
 
-
     def __resnet(self, model, fc=None, out_features=102):
-
-        print('fc==>', fc)
-
         if not fc is None:
             model.fc = fc
         else:
@@ -116,6 +108,9 @@ class MyNet:
     def __import_trained_model(self):
         return  self.__trained_models[self.__trained_name]['model'](pretrained=True)
 
+    def __config_trained_model(self):
+        for param in self.__trained_model.parameters():
+             param.requires_grad = False
 
 class Transforms:
     normalize = ([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
@@ -148,68 +143,5 @@ class Loaders:
                                            num_workers = num_workers)
 
 
-# class TrainModel:
-#     def __init__(self, model, train_loader, validation_loader, criterion, optimizer, colab_kernel=False, epochs=3, print_every=30):
-#         self.model = model
-#         self.train_loader = train_loader
-#         self.validation_loader = validation_loader
-#         self.criterion = criterion
-#         self.optimizer = optimizer
-#         self.epochs = epochs
-#         self.print_every = print_every
-#         self.colab_kernel = colab_kernel
-#
-#     def validation(self, _model, _data_loader, criterion):
-#         valid_correct = 0
-#         valid_loss = 0
-#
-#         for images, labels in (iter(_data_loader)):
-#             if self.colab_kernel:
-#                 images, labels = images.to('cuda'), labels.to('cuda')
-#
-#             # Forward pass
-#             output = _model.forward(images)
-#
-#             # Track loss
-#             valid_loss += loss.item()
-#
-#
-#     steps = 0
-#         running_loss = 0
-#         for e in range(epochs):
-#             # Model in training mode, dropout is on
-#             model.train()
-#             for images, labels in train_loader:
-#                 steps += 1
-#
-#                 # Flatten images into a 784 long vector
-#                 images.resize_(images.size()[0], 784)
-#
-#                 optimizer.zero_grad()
-#
-#                 output = model.forward(images)
-#                 loss = criterion(output, labels)
-#                 loss.backward()
-#                 optimizer.step()
-#
-#                 running_loss += loss.item()
-#
-#                 if steps % print_every == 0:
-#                     # Model in inference mode, dropout is off
-#                     model.eval()
-#
-#                     # Turn off gradients for validation, will speed up inference
-#                     with torch.no_grad():
-#                         test_loss, accuracy = validation(model, testloader, criterion)
-#
-#                     print("Epoch: {}/{}.. ".format(e + 1, epochs),
-#                           "Training Loss: {:.3f}.. ".format(running_loss / print_every),
-#                           "Test Loss: {:.3f}.. ".format(test_loss / len(testloader)),
-#                           "Test Accuracy: {:.3f}".format(accuracy / len(testloader)))
-#
-#                     running_loss = 0
-#
-#                     # Make sure dropout and grads are on for training
-#                     model.train()
 
 
