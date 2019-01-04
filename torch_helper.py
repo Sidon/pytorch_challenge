@@ -3,14 +3,15 @@ import torch
 from torchvision import datasets, models
 from torchvision import transforms as tv_transforms
 from torch.utils.data.sampler import SubsetRandomSampler
+import torch.optim as optim
+
 # import matplotlib.pyplot as plt
 # import torch.nn as nn
 # import torch.nn.functional as F
-# import torch.optim as optim
 
 
 class MyNet:
-    def __init__(self, trained_name, fc_layers = None, out_features = 102, optimizer=None):
+    def __init__(self, trained_name, fc_layers = None, out_features = 102, optimizer=optim.SGD):
         # Additional variables will be used to track training progress for easier re-loads, plotting, etc.
 
 
@@ -26,7 +27,7 @@ class MyNet:
         # self.__tracking['optmizer_name'] = None
 
         # for saving model
-        self.id_model = trained_name
+        self.trained_model = trained_name
 
         self.__trained_models = {
             'vgg11':    {'model': models.vgg11, 'change_model': self.__vgg},
@@ -49,7 +50,7 @@ class MyNet:
             'inception': {'model': models.inception_v3, 'change_model': self.__inception},
         }
 
-        # Criar o optimizer em cad rede
+        # Criar o optimizer em cada rede
         self.optimizer = None if optimizer is None else optimizer
 
         # Import trained model
@@ -116,11 +117,19 @@ class MyNet:
         for param in self.__trained_model.parameters():
              param.requires_grad = False
 
-    def create_optmizer(self, optimizer=None, **kwargs):
+    def create_optmizer(self, optimizer=None, parameters=None, **kwargs):
         optimizer = self.optimizer if optimizer==None else optimizer
-        return optimizer(**kwargs)
+        if not kwargs:
+            kwargs = {'lr':0.001}
+        if parameters is None:
+            if 'fc' in dir(self.__trained_model):
+                parameters = self.__trained_model.fc.parameters()
+            elif 'classifier' in dir(self.__trained_model):
+                parameters = self.__trained_model.classifier.parameters()
+            else:
+                parameters = self.__trained_model.parameters()
 
-
+        return optimizer(parameters, **kwargs)
 
 class Transforms:
     normalize = ([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])

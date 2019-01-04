@@ -9,16 +9,13 @@ class TrainModel:
         self.criterion = criterion
         self.optimizer = optimizer
         self.epochs = epochs
-        self.print_every = print_every
         self.colab_kernel = colab_kernel
         self.gpu_on = gpu_on
         self.model_name = model_name if model_name is not None else model._getname()
 
-
-    def __train(self, model, criterion, optimizer, loader, gpu_on):
-
-        running_loss = 0
-        for image, label in next(loader):
+    def __train(self, model, criterion, optimizer, batch, gpu_on):
+       running_loss = 0
+       for image, label in batch:
             # move data to gpu
             if (gpu_on):
                 image, label = image.cuda(), label.cuda()
@@ -40,13 +37,12 @@ class TrainModel:
 
             # update training loss
             running_loss += loss.item()
-        else:
+       else:
             return running_loss
 
-
-    def __validation(self, model, criterion, loader, gpu_on):
+    def __validation(self, model, criterion, batch, gpu_on):
         running_loss = 0
-        for data, target in loader:
+        for data, target in batch:
             # forward pass: compute predicted outputs by passing inputs to the model
             output = model(data)
             # calculate the loss
@@ -67,16 +63,24 @@ class TrainModel:
         valid_loader = valid_loader if valid_loader is not None else self.validation_loader
 
         min_valid_loss = float('Inf')
+        iter_train_loader = iter(train_loader)
+        iter_valid_loader = iter(valid_loader)
+
 
         for epoch in range(epochs):
 
             # Model in training mode, dropout is on
             model.train()
-            train_loss = self.__train(model, criterion, optimizer, train_loader, gpu_on)
+            batch_train = next(iter_train_loader)
+            batch_valid = next(iter_valid_loader)
+            z_batch_train = zip(batch_train[0], batch_train[1])
+            z_batch_valid = zip(batch_valid[0], batch_valid[1])
+
+            train_loss = self.__train(model, criterion, optimizer, z_batch_train, gpu_on)
 
             # Model in validation mode
             model.eval()
-            valid_loss = self.__validation(model, criterion, optimizer, valid_loader, gpu_on)
+            valid_loss = self.__validation(model, criterion, optimizer, z_batch_valid, gpu_on)
 
             # save model if validation loss has decreased
             if valid_loss <= min_valid_loss:
