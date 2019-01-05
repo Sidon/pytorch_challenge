@@ -7,26 +7,9 @@ import torch.optim as optim
 from torch import nn
 from collections import OrderedDict
 
-# import matplotlib.pyplot as plt
-# import torch.nn as nn
-# import torch.nn.functional as F
-
 
 class MyNet:
     def __init__(self, trained_name, fc_layers = None, out_features = 102, optimizer=optim.SGD):
-        # Additional variables will be used to track training progress for easier re-loads, plotting, etc.
-
-
-        # self.__tracking = {}
-        # self.__tracking['last_epoch'] = 0
-        # self.__tracking['min_loss'] =  99
-        # self.__tracking['learn_rates'] = []
-        # self.__tracking['validation_loss'] = []
-        # self.__tracking['training_loss'] = []
-        # self.__tracking['accuracy_rate'] = []
-        # self.__tracking['trained_name'] = trained_name
-        # self.__tracking['los_name'] = None
-        # self.__tracking['optmizer_name'] = None
 
         # for saving model
         self.trained_model = trained_name

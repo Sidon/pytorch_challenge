@@ -8,20 +8,16 @@ torch_helper.py
 **This module defines the following classes**
 
 
-    **MyNet**
+    `MyNet <https://github.com/Sidon/pytorch_challenge/blob/89c785b420d7557708a795900e1dd25b9da4f234/torch_helper.py#L15>`_
       Class to the definition of the model
 
       Methods
         To change the last layer:
-             __vgg(self, model, fc=None, out_features=102)
-
-             __densenet(self, model, fc=None, out_features=102)
-
-             __inception(self, model, fc=None, out_features=102)
-
-             __squeeznet(self, model, fc=None, out_features=102)
-
-             __resnet(self, model, fc=None, out_features=102)
+             | __vgg(self, model, fc=None, out_features=102)
+             | __densenet(self, model, fc=None, out_features=102)
+             | __inception(self, model, fc=None, out_features=102)
+             | __squeeznet(self, model, fc=None, out_features=102)
+             | __resnet(self, model, fc=None, out_features=102)
 
         To creating optimizer
             create_optmizer(self, optimizer=None, parameters=None, \**kwargs)
@@ -39,7 +35,7 @@ train_model.py
 
 **This module defines the following classes**
 
-    **TrainModel**
+    `TrainModel <https://github.com/Sidon/pytorch_challenge/blob/89c785b420d7557708a795900e1dd25b9da4f234/train_model.py#L3>`_
       Class to definition of training.
 
       Methods
@@ -53,6 +49,6 @@ train_model.py
 
         To validation
               | This method is called by the train method.
-              |__validation(self, model, criterion, batch, gpu_on)
+              | __validation(self, model, criterion, batch, gpu_on)
 
 
