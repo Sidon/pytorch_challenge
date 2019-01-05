@@ -13,6 +13,7 @@ class TrainModel:
         self.gpu_on = gpu_on
         self.model_name = model_name if model_name is not None else model._getname()
 
+
     def __train(self, model, criterion, optimizer, batch, gpu_on):
        running_loss = 0
        for image, label in batch:
@@ -88,7 +89,3 @@ class TrainModel:
                 min_valid_loss = valid_loss
         else:
             pass
-
-
-
-

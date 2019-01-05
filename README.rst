@@ -50,5 +50,3 @@ train_model.py
         To validation
               | This method is called by the train method.
               | __validation(self, model, criterion, batch, gpu_on)
-
-
