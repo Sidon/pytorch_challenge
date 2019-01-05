@@ -41,12 +41,12 @@ train_model.py
       Methods
         To the definition of the training atributs and to make looping in epochs
               | The main method of this class
-              | train(self, model=None, epochs=None, ...gpu_on=False)
+              | `train(self, model=None, epochs=None, ...gpu_on=False) <https://github.com/Sidon/pytorch_challenge/blob/89c785b420d7557708a795900e1dd25b9da4f234/train_model.py#L56>`_
 
         To steps, backwards and calculate loss
               | This method is called by the train method.
-              | __train(self, model, criterion, optimizer, batch, gpu_on)
+              | `__train(self, model, criterion, optimizer, batch, gpu_on) <https://github.com/Sidon/pytorch_challenge/blob/89c785b420d7557708a795900e1dd25b9da4f234/train_model.py#L16>`_
 
         To validation
               | This method is called by the train method.
-              | __validation(self, model, criterion, batch, gpu_on)
+              | `__validation(self, model, criterion, batch, gpu_on) <https://github.com/Sidon/pytorch_challenge/blob/89c785b420d7557708a795900e1dd25b9da4f234/train_model.py#L43>`_
