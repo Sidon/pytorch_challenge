@@ -11,7 +11,7 @@ from collections import OrderedDict
 class MyNet:
     def __init__(self, trained_name, fc_layers = None, out_features = 102, optimizer=optim.SGD):
 
-        # for saving model
+        # to saving model
         self.trained_model = trained_name
 
         self.__trained_models = {
