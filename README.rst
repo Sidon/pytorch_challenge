@@ -43,13 +43,16 @@ train_model.py
       Class to definition of training.
 
       Methods
-        To the definition of the training atributs and to make looping in epochs|
-              train(self, model=None, epochs=None, ...gpu_on=False):
+        To the definition of the training atributs and to make looping in epochs
+              | The main method of this class
+              | train(self, model=None, epochs=None, ...gpu_on=False)
 
         To steps, backwards and calculate loss
-              __train(self, model, criterion, optimizer, batch, gpu_on)
+              | This method is called by the train method.
+              | __train(self, model, criterion, optimizer, batch, gpu_on)
 
-        To validation|
-            __validation(self, model, criterion, batch, gpu_on)
+        To validation
+              | This method is called by the train method.
+              |__validation(self, model, criterion, batch, gpu_on)
 
 
