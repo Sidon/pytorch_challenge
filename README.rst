@@ -27,11 +27,11 @@ torch_helper.py
             create_optmizer(self, optimizer=None, parameters=None, \**kwargs)
 
 
-**Transforms**
-  Class for definition of transforms
+    **Transforms**
+        Class for definition of transforms
 
-**Loaders**
-  Class for the definition of loaders
+    **Loaders**
+        Class for the definition of loaders
 
 
 train_model.py
@@ -39,17 +39,17 @@ train_model.py
 
 **This module defines the following classes**
 
-|    **TrainModel**
-|      Class to definition of training.
-|
-|      Methods
-|        To the definition of the training atributs and to make looping in epochs|
-|              train(self, model=None, epochs=None, ...gpu_on=False):
-|
-|        To steps, backwards and calculate loss
-|              __train(self, model, criterion, optimizer, batch, gpu_on)
-|
-|        To validation|
-|            __validation(self, model, criterion, batch, gpu_on)
-|
+    **TrainModel**
+      Class to definition of training.
+
+      Methods
+        To the definition of the training atributs and to make looping in epochs|
+              train(self, model=None, epochs=None, ...gpu_on=False):
+
+        To steps, backwards and calculate loss
+              __train(self, model, criterion, optimizer, batch, gpu_on)
+
+        To validation|
+            __validation(self, model, criterion, batch, gpu_on)
+
 
