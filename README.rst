@@ -8,20 +8,24 @@ torch_helper.py
 **This module defines the following classes**
 
 
-|    **MyNet**
-|      Class to the definition of the model
-|
-|      Methods
-|        To change the last layer:
-|             __vgg(self, model, fc=None, out_features=102)
-|             __densenet(self, model, fc=None, out_features=102)
-|             __inception(self, model, fc=None, out_features=102)
-|             __squeeznet(self, model, fc=None, out_features=102)
-|             __resnet(self, model, fc=None, out_features=102)
-|
-|        To creating optimizer
-|            create_optmizer(self, optimizer=None, parameters=None, \**kwargs)
-|
+    **MyNet**
+      Class to the definition of the model
+
+      Methods
+        To change the last layer:
+             __vgg(self, model, fc=None, out_features=102)
+
+             __densenet(self, model, fc=None, out_features=102)
+
+             __inception(self, model, fc=None, out_features=102)
+
+             __squeeznet(self, model, fc=None, out_features=102)
+
+             __resnet(self, model, fc=None, out_features=102)
+
+        To creating optimizer
+            create_optmizer(self, optimizer=None, parameters=None, \**kwargs)
+
 
 **Transforms**
   Class for definition of transforms
