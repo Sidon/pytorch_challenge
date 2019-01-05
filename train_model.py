@@ -13,47 +13,6 @@ class TrainModel:
         self.gpu_on = gpu_on
         self.model_name = model_name if model_name is not None else model._getname()
 
-
-    def __train(self, model, criterion, optimizer, batch, gpu_on):
-       running_loss = 0
-       for image, label in batch:
-            # move data to gpu
-            if (gpu_on):
-                image, label = image.cuda(), label.cuda()
-
-            # Clear the gradients, do this because gradients are accumulated
-            optimizer.zero_grad()
-
-            # Forward pass, then backward pass, then update weights
-            output = model.forward(image)
-
-            # calculate the batch loss
-            loss = criterion(output, label)
-
-            # backward pass: compute gradient of the loss with respect to model parameters
-            loss.backward()
-
-            # perform a single optimization step (parameter update)
-            optimizer.step()
-
-            # update training loss
-            running_loss += loss.item()
-       else:
-            return running_loss
-
-    def __validation(self, model, criterion, batch, gpu_on):
-        running_loss = 0
-        for data, target in batch:
-            # forward pass: compute predicted outputs by passing inputs to the model
-            output = model.forward(data)
-            # calculate the loss
-            loss = criterion(output, target)
-            # update running validation loss
-            running_loss += loss.item() * data.size(0)
-        else:
-            return running_loss
-
-
     def train(self, model=None, epochs=None, criterion=None, optimizer=None, train_loader=None, valid_loader=None,
               gpu_on=False):
         model = self.model if model is None else model
@@ -64,28 +23,62 @@ class TrainModel:
         valid_loader = valid_loader if valid_loader is not None else self.validation_loader
 
         min_valid_loss = float('Inf')
-        iter_train_loader = iter(train_loader)
-        iter_valid_loader = iter(valid_loader)
+        training_loss = 0
+        valid_loss = 0
 
+        ## Train the model
+        model.train()
         for epoch in range(epochs):
+            for images, labels in iter(train_loader):
 
-            # Model in training mode, dropout is on
-            model.train()
-            batch_train = next(iter_train_loader)
-            batch_valid = next(iter_valid_loader)
-            z_batch_train = zip(batch_train[0], batch_train[1])
-            z_batch_valid = zip(batch_valid[0], batch_valid[1])
+                # move data to gpu
+                if (gpu_on):
+                    images, labels = images.cuda(), labels.cuda()
 
-            train_loss = self.__train(model, criterion, optimizer, z_batch_train, gpu_on)
+                # Clear the gradients, do this because gradients are accumulated
+                optimizer.zero_grad()
+                # Forward pass, then backward pass, then update weights
+                output = model.forward(images)
+                # calculate the batch loss
+                loss = criterion(output, labels)
+                # backward pass: compute gradient of the loss with respect to model parameters
+                loss.backward()
+                # perform a single optimization step (parameter update)
+                optimizer.step()
+                # update training loss
+                training_loss += loss.item()
 
-            # Model in validation mode
+                print('epoch: ', epoch, 'training_loss: ', training_loss)
+
+            ## Validate the movel
             model.eval()
-            valid_loss = self.__validation(model, criterion, optimizer, z_batch_valid, gpu_on)
+            for images, labels in iter(valid_loader):
+                # move data to gpu
+                if (gpu_on):
+                    images, labels = images.cuda(), labels.cuda()
+
+                # forward pass: compute predicted outputs by passing inputs to the model
+                output = model(images)
+                # calculate the batch loss
+                loss = criterion(output, labels)
+                # update average validation loss
+                valid_loss += loss.item() * images.size(0)
+
+            # calculate average losses
+            training_loss = training_loss / len(train_loader.dataset)
+            valid_loss = valid_loss / len(valid_loader.dataset)
+
+            # print training/validation statistics
+            print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
+                epoch, training_loss, valid_loss))
 
             # save model if validation loss has decreased
             if valid_loss <= min_valid_loss:
-                print('Validation loss decreased ({:.6f} --> {:.6f}). Saving model... '.format(valid_loss, min_valid_loss))
-                torch.save(model.state_dict(), self.model_name )
+                print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
+                    min_valid_loss,
+                    valid_loss))
+                # SaveCheckpoint()
+                torch.save(model.state_dict(), 'model_part.pt')
                 min_valid_loss = valid_loss
         else:
             pass

@@ -50,11 +50,14 @@ class MyNet:
         # Import trained model
         __model = self.__trained_models[trained_name]['model'](pretrained=True)
 
+        # Freeze the trainde model
+        self.freeze_model(__model)
+
         # Change last layer of trained model
         self.__trained_model = self.__trained_models[trained_name]['change_model'](__model, fc_layers, out_features)
 
         # Config parameters of the trained model
-        self.__config_trained_model()
+        # self.__config_trained_model()
 
 
     def __vgg(self, model, fc=None, out_features=102):
@@ -66,7 +69,7 @@ class MyNet:
 
     def __densenet(self, model, fc=None, out_features=102):
         if not fc is None:
-            model.classifier = clf
+            model.classifier = fc
         else:
             model.classifier.out_features = out_features
         return model
@@ -108,14 +111,14 @@ class MyNet:
         return  self.__trained_models[self.__trained_name]['model'](pretrained=True)
 
     def __config_trained_model(self):
-        for param in self.__trained_model.parameters():
-             param.requires_grad = False
-
         if 'fc' in dir(self.__trained_model):
             self.__trained_model.fc = self.__clf
         if 'classifier' in dir(self.trained_model):
             self.__trained_model.classifier = self.__clf
 
+    def freeze_model(self, model):
+        for param in model.parameters():
+             param.requires_grad = False
 
     def create_optmizer(self, optimizer=None, parameters=None, **kwargs):
         optimizer = self.optimizer if optimizer==None else optimizer
