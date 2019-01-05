@@ -50,3 +50,9 @@ train_model.py
         To validation
               | This method is called by the train method.
               | `__validation(self, model, criterion, batch, gpu_on) <https://github.com/Sidon/pytorch_challenge/blob/89c785b420d7557708a795900e1dd25b9da4f234/train_model.py#L43>`_
+
+
+The "executable" file (jupyter notebook)
+----------------------------------------
+`flower-classification.ipynb <https://github.com/Sidon/pytorch_challenge/blob/master/flower-classification.ipynb>`_
+
