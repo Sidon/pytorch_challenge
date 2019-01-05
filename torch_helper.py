@@ -4,6 +4,8 @@ from torchvision import datasets, models
 from torchvision import transforms as tv_transforms
 from torch.utils.data.sampler import SubsetRandomSampler
 import torch.optim as optim
+from torch import nn
+from collections import OrderedDict
 
 # import matplotlib.pyplot as plt
 # import torch.nn as nn
@@ -49,6 +51,15 @@ class MyNet:
             'densenet201': {'model': models.densenet201, 'change_model': self.__densenet},
             'inception': {'model': models.inception_v3, 'change_model': self.__inception},
         }
+
+        self.__clf = nn.Sequential(OrderedDict([
+            ('fc1', nn.Linear(25088, 1024)),
+            ('relu1', nn.ReLU()),
+            ('drop1', nn.Dropout(p=0.5)),
+            ('fc2', nn.Linear(1024, 256)),
+            ('relu2', nn.ReLU()),
+            ('fc3', nn.Linear(256, 102)),
+            ('output', nn.LogSoftmax(dim=1))]))
 
         # Criar o optimizer em cada rede
         self.optimizer = None if optimizer is None else optimizer
@@ -106,9 +117,9 @@ class MyNet:
     def model(self):
         return self.__trained_model
 
-    @property
-    def model(self):
-        return self.__import_trained_model() if self.__trained_model is None else self.__trained_model
+    # @property
+    # def model(self):
+    #     return self.__import_trained_model() if self.__trained_model is None else self.__trained_model
 
     def __import_trained_model(self):
         return  self.__trained_models[self.__trained_name]['model'](pretrained=True)
@@ -116,6 +127,12 @@ class MyNet:
     def __config_trained_model(self):
         for param in self.__trained_model.parameters():
              param.requires_grad = False
+
+        if 'fc' in dir(self.__trained_model):
+            self.__trained_model.fc = self.__clf
+        if 'classifier' in dir(self.trained_model):
+            self.__trained_model.classifier = self.__clf
+
 
     def create_optmizer(self, optimizer=None, parameters=None, **kwargs):
         optimizer = self.optimizer if optimizer==None else optimizer
@@ -130,6 +147,9 @@ class MyNet:
                 parameters = self.__trained_model.parameters()
 
         return optimizer(parameters, **kwargs)
+
+
+
 
 class Transforms:
     normalize = ([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])

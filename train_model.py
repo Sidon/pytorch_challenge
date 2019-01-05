@@ -9,7 +9,7 @@ class TrainModel:
         self.criterion = criterion
         self.optimizer = optimizer
         self.epochs = epochs
-        self.colab_kernel = colab_kernel
+        self.Traindeficolab_kernel = colab_kernel
         self.gpu_on = gpu_on
         self.model_name = model_name if model_name is not None else model._getname()
 
@@ -44,7 +44,7 @@ class TrainModel:
         running_loss = 0
         for data, target in batch:
             # forward pass: compute predicted outputs by passing inputs to the model
-            output = model(data)
+            output = model.forward(data)
             # calculate the loss
             loss = criterion(output, target)
             # update running validation loss
@@ -65,7 +65,6 @@ class TrainModel:
         min_valid_loss = float('Inf')
         iter_train_loader = iter(train_loader)
         iter_valid_loader = iter(valid_loader)
-
 
         for epoch in range(epochs):
 
