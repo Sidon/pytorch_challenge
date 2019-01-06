@@ -70,10 +70,6 @@ class TrainModel:
             training_loss = training_loss / len(train_loader.dataset)
             valid_loss = valid_loss / len(valid_loader.dataset)
 
-            # print training/validation statistics
-            print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
-                epoch, training_loss, valid_loss))
-
             # save model if validation loss has decreased
             if valid_loss <= min_valid_loss:
                 print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
