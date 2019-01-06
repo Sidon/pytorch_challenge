@@ -54,9 +54,9 @@ class MyNet:
         self.freeze_model(__model)
 
         # Change last layer of trained model
-        self.__trained_model = self.__trained_models[trained_name]['change_model'](__model, fc_layers, out_features)
+        self.__trained_model = self.__trained_models[trained_name]['change_model'](__model, self.__clf, out_features)
 
-        # Config parameters of the trained model
+        #Config parameters of the trained model
         # self.__config_trained_model()
 
 

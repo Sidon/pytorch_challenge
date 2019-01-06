@@ -25,12 +25,14 @@ class TrainModel:
         min_valid_loss = float('Inf')
         training_loss = 0
         valid_loss = 0
+        step = 0
 
         ## Train the model
         model.train()
         for epoch in range(epochs):
             for images, labels in iter(train_loader):
 
+                step += 1
                 # move data to gpu
                 if (gpu_on):
                     images, labels = images.cuda(), labels.cuda()
@@ -48,7 +50,7 @@ class TrainModel:
                 # update training loss
                 training_loss += loss.item()
 
-                print('epoch: ', epoch, 'training_loss: ', training_loss)
+                print('Step: ', step, 'epoch: ', epoch, 'training_loss: ', training_loss)
 
             ## Validate the movel
             model.eval()
