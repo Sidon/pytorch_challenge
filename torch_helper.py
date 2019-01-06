@@ -12,7 +12,7 @@ class MyNet:
     def __init__(self, trained_name, fc_layers = None, out_features = 102, optimizer=optim.SGD):
 
         # to saving model
-        self.trained_model = trained_name
+        self.trained_model_name = trained_name
 
         self.__trained_models = {
             'vgg11':    {'model': models.vgg11, 'change_model': self.__vgg},
@@ -113,7 +113,7 @@ class MyNet:
     def __config_trained_model(self):
         if 'fc' in dir(self.__trained_model):
             self.__trained_model.fc = self.__clf
-        if 'classifier' in dir(self.trained_model):
+        if 'classifier' in dir(self.trained_model_name):
             self.__trained_model.classifier = self.__clf
 
     def freeze_model(self, model):

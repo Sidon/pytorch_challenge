@@ -1,7 +1,7 @@
 import torch
 
 class TrainModel:
-    def __init__(self, model, train_loader, validation_loader, criterion, optimizer, colab_kernel=False, epochs=3,
+    def __init__(self, model, train_loader, validation_loader, criterion, optimizer, epochs=3,
                  gpu_on=False, model_name = None):
         self.model = model
         self.train_loader = train_loader
@@ -9,29 +9,39 @@ class TrainModel:
         self.criterion = criterion
         self.optimizer = optimizer
         self.epochs = epochs
-        self.Traindeficolab_kernel = colab_kernel
         self.gpu_on = gpu_on
         self.model_name = model_name if model_name is not None else model._getname()
 
     def train(self, model=None, epochs=None, criterion=None, optimizer=None, train_loader=None, valid_loader=None,
-              gpu_on=False):
+              gpu_on=None):
         model = self.model if model is None else model
         epochs = self.epochs if epochs is None else epochs
         criterion = self.criterion if criterion is None else criterion
         optimizer = self.optimizer if optimizer is None else optimizer
         train_loader = train_loader if train_loader is not None else self.train_loader
         valid_loader = valid_loader if valid_loader is not None else self.validation_loader
+        gpu_on = self.gpu_on if gpu_on is None else gpu_on
 
         min_valid_loss = float('Inf')
         training_loss = 0
         valid_loss = 0
         step = 0
 
+        # move model to cuda
+        if gpu_on:
+            model.cuda()
+
+        print('Training model: ', self.model_name )
+        print('Epochs: ', epochs)
+        print('GPU: ', gpu_on)
+        print('Model in cuda: ', next(model.parameters()).is_cuda,'\n')
+
         ## Train the model
         model.train()
         for epoch in range(epochs):
-            for images, labels in iter(train_loader):
 
+            print('Training, epoch: ', epoch,'/', epochs)
+            for images, labels in iter(train_loader):
                 step += 1
                 # move data to gpu
                 if (gpu_on):
@@ -50,9 +60,8 @@ class TrainModel:
                 # update training loss
                 training_loss += loss.item()
 
-                print('Step: ', step, 'epoch: ', epoch, 'training_loss: ', training_loss)
-
-            ## Validate the movel
+            ## Validate the model
+            print('Validation, epoch: ', epoch,'/', epochs)
             model.eval()
             for images, labels in iter(valid_loader):
                 # move data to gpu
@@ -76,7 +85,7 @@ class TrainModel:
                     min_valid_loss,
                     valid_loss))
                 # SaveCheckpoint()
-                torch.save(model.state_dict(), 'model_part.pt')
+                torch.save(model.state_dict(), self.model_name+'.pt')
                 min_valid_loss = valid_loss
         else:
             pass
